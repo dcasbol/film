@@ -27,7 +27,7 @@ import h5py
 
 import vr.utils as utils
 import vr.preprocess
-from vr.data import ClevrDataset, ClevrDataLoader
+from vr.data import ClevrDataLoader
 from vr.models import ModuleNet, Seq2Seq, LstmModel, CnnLstmModel, CnnLstmSaModel
 from vr.models import FiLMedNet
 from vr.models import FiLMGen
@@ -50,6 +50,8 @@ parser.add_argument('--family_split_file', default=None)
 parser.add_argument('--num_train_samples', default=None, type=int)
 parser.add_argument('--num_val_samples', default=None, type=int)
 parser.add_argument('--shuffle_train_data', default=1, type=int)
+parser.add_argument('--min_program_depth', default=None, type=int)
+parser.add_argument('--max_program_depth', default=None, type=int)
 
 # What type of model to use and which parts to train
 parser.add_argument('--model_type', default='PG',
@@ -176,6 +178,8 @@ def main(args):
     'batch_size': args.batch_size,
     'shuffle': args.shuffle_train_data == 1,
     'question_families': question_families,
+    'min_program_length': args.min_program_length,
+    'max_program_length': args.max_program_length,
     'max_samples': args.num_train_samples,
     'num_workers': args.loader_num_workers,
   }
@@ -185,6 +189,8 @@ def main(args):
     'vocab': vocab,
     'batch_size': args.batch_size,
     'question_families': question_families,
+    'min_program_length': args.min_program_length,
+    'max_program_length': args.max_program_length,
     'max_samples': args.num_val_samples,
     'num_workers': args.loader_num_workers,
   }

@@ -151,13 +151,17 @@ class ClevrDataLoader(DataLoader):
     max_samples = kwargs.pop('max_samples', None)
     question_h5_path = kwargs.pop('question_h5')
     image_idx_start_from = kwargs.pop('image_idx_start_from', None)
+    min_program_dept = kwargs.pop('min_program_depth', None)
+    max_program_depth = kwargs.pop('max_program_depth', None)
     print('Reading questions from ', question_h5_path)
     with h5py.File(question_h5_path, 'r') as question_h5:
       self.dataset = ClevrDataset(question_h5, self.feature_h5, vocab, mode,
                                   image_h5=self.image_h5,
                                   max_samples=max_samples,
                                   question_families=question_families,
-                                  image_idx_start_from=image_idx_start_from)
+                                  image_idx_start_from=image_idx_start_from,
+                                  min_program_depth=min_program_dept,
+                                  max_program_depth=max_program_depth)
     kwargs['collate_fn'] = clevr_collate
     super(ClevrDataLoader, self).__init__(self.dataset, **kwargs)
 
