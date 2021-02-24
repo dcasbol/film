@@ -26,6 +26,14 @@ from vr.preprocess import tokenize, encode, build_vocab
 Preprocessing script for CLEVR question files.
 """
 
+def compute_program_depth(program):
+	depths = list()
+	for inst in program:
+		d = 0
+		if len(inst['inputs']) > 0:
+			d = max([ depths[i] for i in inst['inputs'] ]) + 1
+		depths.append(d)
+	return depths[-1]
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', default='prefix',
@@ -112,6 +120,7 @@ def main(args):
   print('Encoding data')
   questions_encoded = []
   programs_encoded = []
+  program_depths = []
   question_families = []
   orig_idxs = []
   image_idxs = []
@@ -140,6 +149,8 @@ def main(args):
       program_tokens = tokenize(program_str)
       program_encoded = encode(program_tokens, vocab['program_token_to_idx'])
       programs_encoded.append(program_encoded)
+      program_depth = compute_program_depth(program)
+      program_depths.append(program_depth)
 
     if 'answer' in q:
       answers.append(vocab['answer_token_to_idx'][q['answer']])
@@ -160,8 +171,10 @@ def main(args):
   print('Writing output')
   questions_encoded = np.asarray(questions_encoded, dtype=np.int32)
   programs_encoded = np.asarray(programs_encoded, dtype=np.int32)
+  program_depths = np.asarray(program_depths, dtype=np.int32)
   print(questions_encoded.shape)
   print(programs_encoded.shape)
+  print(program_depths.shape)
 
   mapping = {}
   for i, t in enumerate(set(types)):
@@ -180,6 +193,7 @@ def main(args):
 
     if len(programs_encoded) > 0:
       f.create_dataset('programs', data=programs_encoded)
+      f.create_dataset('program_depths', data=program_depths)
     if len(question_families) > 0:
       f.create_dataset('question_families', data=np.asarray(question_families))
     if len(answers) > 0:
