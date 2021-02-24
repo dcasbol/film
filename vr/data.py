@@ -26,7 +26,8 @@ def _dataset_to_tensor(dset, mask=None):
 class ClevrDataset(Dataset):
   def __init__(self, question_h5, feature_h5, vocab, mode='prefix',
                image_h5=None, max_samples=None, question_families=None,
-               image_idx_start_from=None):
+               image_idx_start_from=None,
+               min_program_depth=None, max_program_depth=None):
     mode_choices = ['prefix', 'postfix']
     if mode not in mode_choices:
       raise ValueError('Invalid mode "%s"' % mode)
@@ -43,10 +44,24 @@ class ClevrDataset(Dataset):
       N = all_families.shape[0]
       print(question_families)
       target_families = np.asarray(question_families)[:, None]
-      mask = (all_families == target_families).any(axis=0)
+      mask = (all_families == target_families).any(axis=0) # This "axis=0 is misleading"
+      # question_families is actually a 1-dimension vector with size num_questions
     if image_idx_start_from is not None:
       all_image_idxs = np.asarray(question_h5['image_idxs'])
       mask = all_image_idxs >= image_idx_start_from
+
+    if min_program_depth is not None or max_program_depth is not None:
+      if 'program_depths' in question_h5:
+        depths = question_h5['program_depths']
+        prog_mask = np.full(depths.shape, True)
+        if min_program_depth is not None:
+          prog_mask = depths >= min_program_depth
+        if max_program_depth is not None:
+          prog_mask &= depths <= max_program_depth
+        if mask is None:
+          mask = prog_mask
+        else:
+          mask &= prog_mask   
 
     # Data from the question file is small, so read it all into memory
     print('Reading question data into memory')
