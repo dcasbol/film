@@ -61,10 +61,10 @@ def run_batch(cur_batch, model):
   image_batch = np.concatenate(cur_batch, 0).astype(np.float32)
   image_batch = (image_batch / 255.0 - mean) / std
   image_batch = torch.FloatTensor(image_batch).cuda()
-  image_batch = torch.autograd.Variable(image_batch, volatile=True)
-
-  feats = model(image_batch)
-  feats = feats.data.cpu().clone().numpy()
+  
+  with torch.no_grad():
+    feats = model(image_batch)
+    feats = feats.data.cpu().clone().numpy()
 
   return feats
 
