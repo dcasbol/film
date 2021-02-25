@@ -52,7 +52,7 @@ class ClevrDataset(Dataset):
 
     if min_program_depth is not None or max_program_depth is not None:
       if 'program_depths' in question_h5:
-        depths = question_h5['program_depths']
+        depths = np.asarray(question_h5['program_depths'])
         prog_mask = np.full(depths.shape, True)
         if min_program_depth is not None:
           prog_mask = depths >= min_program_depth
