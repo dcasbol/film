@@ -45,4 +45,5 @@ python scripts/train_model.py \
   --use_beta 1 \
   --condition_method bn-film \
   --program_generator_parameter_efficient 1 \
+  --max_program_depth 5 \
   | tee $log_path
