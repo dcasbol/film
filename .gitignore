@@ -20,6 +20,8 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+.vscode
+*.code-workspace
 .Python
 env/
 build/
