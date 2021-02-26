@@ -182,6 +182,7 @@ def main(args):
     'max_program_depth': args.max_program_depth,
     'max_samples': args.num_train_samples,
     'num_workers': args.loader_num_workers,
+    'drop_last': True,
   }
   val_loader_kwargs = {
     'question_h5': args.val_question_h5,
