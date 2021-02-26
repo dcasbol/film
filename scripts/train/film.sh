@@ -3,6 +3,7 @@
 checkpoint_path="data/film.pt"
 log_path="data/film.log"
 python scripts/train_model.py \
+  ----loader_num_workers 8 \
   --checkpoint_path $checkpoint_path \
   --model_type FiLM \
   --num_iterations 20000000 \
