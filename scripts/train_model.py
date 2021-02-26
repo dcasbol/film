@@ -366,8 +366,9 @@ def train_loop(args, train_loader, val_loader):
         num_checkpoints += 1
         print('Checking training accuracy ... ')
         start = time.time()
-        train_acc = check_accuracy(args, program_generator, execution_engine,
-                                   baseline_model, train_loader)
+        with torch.no_grad():
+          train_acc = check_accuracy(args, program_generator, execution_engine,
+                                    baseline_model, train_loader)
         if args.time == 1:
           train_pass_time = (time.time() - start)
           train_pass_total_time += train_pass_time
@@ -376,8 +377,9 @@ def train_loop(args, train_loader, val_loader):
         print('train accuracy is', train_acc)
         print('Checking validation accuracy ...')
         start = time.time()
-        val_acc = check_accuracy(args, program_generator, execution_engine,
-                                 baseline_model, val_loader)
+        with torch.no_grad():
+          val_acc = check_accuracy(args, program_generator, execution_engine,
+                                  baseline_model, val_loader)
         if args.time == 1:
           val_pass_time = (time.time() - start)
           val_pass_total_time += val_pass_time
