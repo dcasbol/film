@@ -151,8 +151,8 @@ parser.add_argument('--time', default=0, type=int)
 
 
 def main(args):
-  assert args.min_program_length == args.max_program_length, \
-    "This script is for validating at one singular length."
+  assert args.min_program_depth == args.max_program_depth, \
+    "This script is for validating at one singular depth."
 
   if args.randomize_checkpoint_path == 1:
     name, ext = os.path.splitext(args.checkpoint_path)
@@ -183,8 +183,8 @@ def main(args):
     'vocab': vocab,
     'batch_size': args.batch_size,
     'question_families': question_families,
-    'min_program_length': args.min_program_length,
-    'max_program_length': args.max_program_length,
+    'min_program_depth': args.min_program_depth,
+    'max_program_depth': args.max_program_depth,
     'max_samples': args.num_val_samples,
     'num_workers': args.loader_num_workers,
   }
