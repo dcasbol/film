@@ -6,7 +6,7 @@ log_path="data/film-by-depth.log"
 
 for depth in {3..18}
 do
-  python scripts/train_model.py \
+  python scripts/val_on_depth.py \
     --output-json $output_json \
     --loader_num_workers 8 \
     --program_generator_start_from $checkpoint_path \
