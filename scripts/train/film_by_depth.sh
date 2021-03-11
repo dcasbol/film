@@ -2,7 +2,7 @@
 
 output_json="data/film_acc_by_depth.json"
 checkpoint_path="data/film.pt"
-log_path="data/film.log"
+log_path="data/film-by-depth.log"
 
 for depth in {3..18}
 do
