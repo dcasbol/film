@@ -4,7 +4,7 @@ output_json="data/film_acc_by_depth.json"
 checkpoint_path="data/film.pt"
 log_path="data/film-by-depth.log"
 
-for depth in {3..18}
+for depth in {3..19}
 do
   python scripts/val_on_depth.py \
     --output-json $output_json \
